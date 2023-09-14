@@ -86,7 +86,7 @@ def getDataloader(args):
     labeled_idxs = list(range(0, int(labeled_slice * total_slices)))
     unlabeled_idxs = list(range(int(labeled_slice * total_slices), total_slices))
     print("label num:{}, unlabel num:{} percent:{}".format(len(labeled_idxs), len(unlabeled_idxs), labeled_slice))
-    batch_sampler = TwoStreamBatchSampler(labeled_idxs, unlabeled_idxs, args.total_batch_size/2, args.labeled_bs)
+    batch_sampler = TwoStreamBatchSampler(labeled_idxs, unlabeled_idxs, args.total_batch_size, args.labeled_bs)
     trainloader = DataLoader(db_train, batch_sampler=batch_sampler,
                              num_workers=8, pin_memory=False, worker_init_fn=worker_init_fn)
     valloader = DataLoader(db_val, batch_size=1, shuffle=False, num_workers=1)
