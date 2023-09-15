@@ -167,9 +167,11 @@ def train(args):
             consistency_loss = (consistency_loss_aux1 + consistency_loss_aux2 + consistency_loss_aux3) / 3
             loss = supervised_loss + consistency_weight * consistency_loss
             iou, dice, _, _, _, _, _ = iou_score(outputs[:args.labeled_bs], label_batch[:args.labeled_bs])
+            scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer=optimizer, T_max=max_epoch)
             optimizer.zero_grad()
             loss.backward()
-            optimizer.step()
+            print(scheduler)
+            scheduler.step()
 
             lr_ = base_lr * (1.0 - iter_num / max_iterations) ** 0.9
             for param_group in optimizer.param_groups:
